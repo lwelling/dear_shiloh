@@ -22,7 +22,7 @@ const authenticatedItems: MenuProps["items"] = [
     icon: <BulbOutlined />,
   },
   {
-    label: <Link to="/messages">Messages</Link>,
+    label: "Messages",
     key: "messages",
   },
 ];
