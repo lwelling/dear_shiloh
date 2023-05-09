@@ -4,9 +4,10 @@ import { useContext } from "react";
 import { authContext } from "~/auth/providers/ProvideAuth";
 import { LogInCard } from "~/components/LogInCard/LogInCard";
 import supabase from "~/supabaseClient";
+import "antd/dist/antd.css";
 
 export const meta: V2_MetaFunction = () => {
-  return [{ title: "New Remix App" }];
+  return [{ title: "Dear Shiloh" }];
 };
 
 const Index = () => {

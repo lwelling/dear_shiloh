@@ -3,6 +3,11 @@ import React, { useState, useEffect } from "react";
 import { Card, Row, Col, Spin, Button } from "antd";
 import { HeartTwoTone } from "@ant-design/icons";
 import { NewMemory } from "~/components/NewMemory/NewMemory";
+import type { V2_MetaFunction } from "@remix-run/node";
+
+export const meta: V2_MetaFunction = () => {
+  return [{ title: "Memories" }];
+};
 
 interface Thought {
   id: number;
