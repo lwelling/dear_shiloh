@@ -1,9 +1,11 @@
 import React, { useContext, useState } from "react";
-import { HeartOutlined, BulbOutlined, HomeFilled } from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Menu } from "antd";
 import { Link } from "@remix-run/react";
+import { HeartOutlined, BulbOutlined, HomeFilled } from "@ant-design/icons";
+import { Menu } from "antd";
+
 import { authContext } from "~/auth/providers/ProvideAuth";
+
+import type { MenuProps } from "antd";
 
 const authenticatedItems: MenuProps["items"] = [
   {
@@ -41,7 +43,6 @@ export const Navbar: React.FC = () => {
   let auth = useContext(authContext);
 
   const onClick: MenuProps["onClick"] = (e) => {
-    console.log("click ", e);
     setCurrent(e.key);
   };
 

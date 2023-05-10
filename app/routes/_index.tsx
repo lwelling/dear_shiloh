@@ -10,16 +10,15 @@ export const meta: V2_MetaFunction = () => {
 };
 
 const Index = () => {
+  let auth = useContext(authContext);
+  let { Title } = Typography;
+
   const gradientBackgroundStyle = {
     minHeight: "100vh", // Make sure the gradient covers the entire height of the screen
     background: "linear-gradient(135deg, #E91E63, #FF9800)", // Add the gradient colors
     display: "flex",
     alignItems: "center", // Center the Login component vertically
   };
-
-  const { Title } = Typography;
-
-  let auth = useContext(authContext);
 
   const handleSignOut = async () => {
     let { error } = await supabase.auth.signOut();
@@ -66,11 +65,9 @@ const Index = () => {
   );
 
   return (
-    <>
-      <div style={gradientBackgroundStyle}>
-        {!auth.loading && auth.sessionData ? loggedIn : notLoggedIn}
-      </div>
-    </>
+    <div style={gradientBackgroundStyle}>
+      {!auth.loading && auth.sessionData ? loggedIn : notLoggedIn}
+    </div>
   );
 };
 

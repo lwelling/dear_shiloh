@@ -10,3 +10,13 @@ export interface SessionData {
   sessionData: Session | null;
   loading: boolean;
 }
+
+export interface AlertProps {
+  type: "success" | "error" | "info" | "warning";
+  content: string;
+}
+
+export interface NotificationProps {
+  message: string;
+  type: string;
+}

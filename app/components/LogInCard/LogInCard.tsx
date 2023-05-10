@@ -1,38 +1,24 @@
 import React, { useState } from "react";
-import { Card, Typography, Button, Spin } from "antd";
+import { Card, Typography, Button, Spin, Form, Input } from "antd";
 
 import supabase from "~/supabaseClient";
+import { Notification } from "../Notification/Notification";
 
 const { Title } = Typography;
 
 export const LogInCard: React.FC = () => {
   const [loading, setLoading] = useState(false);
-
-  const shilohLogin = async () => {
-    setLoading(true);
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: "lucaswelling1@gmail.com",
-        password: "DaddylovesshiloH",
-      });
-      if (error) {
-        console.log(error);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [showLoginForm, setShowLoginForm] = useState(false);
+  const [loginError, setLoginError] = useState("");
 
   const loginCardStyle = {
     width: "100%",
     maxWidth: "400px",
     margin: "2rem auto",
-    textAlign: "center" as const, // Explicitly provide the type for textAlign
-    backgroundColor: "rgba(255, 255, 255, 0.4)", // Set the background color with low opacity
-    backdropFilter: "blur(10px)", // Add the blur effect
-    borderRadius: "8px", // Add some border radius for a smoother look
+    textAlign: "center" as const,
+    backgroundColor: "rgba(255, 255, 255, 0.4)",
+    backdropFilter: "blur(10px)",
+    borderRadius: "8px",
   };
 
   const titleStyle = {
@@ -47,23 +33,71 @@ export const LogInCard: React.FC = () => {
     gap: "1rem",
   };
 
+  const handleButtonClick = () => {
+    setShowLoginForm(true);
+  };
+
+  const [form] = Form.useForm();
+
+  const handleLogin = async (values: { email: string; password: string }) => {
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithPassword(values);
+      if (error) {
+        console.log(error);
+        setLoginError(error.message);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+      form.setFieldsValue(values); // Keep form values after submission
+    }
+  };
+
   return (
-    <Card style={loginCardStyle} bordered={false}>
-      <Title level={2} style={titleStyle}>
-        Dear Shiloh
-      </Title>
-      {loading ? (
-        <Spin />
-      ) : (
-        <div style={buttonContainerStyle}>
-          <Button type="primary" size="large" onClick={() => shilohLogin()}>
-            I am Shiloh!
-          </Button>
-          <Button type="text" size="large">
-            Mommy / Daddy
-          </Button>
-        </div>
-      )}
-    </Card>
+    <>
+      {loginError && <Notification message={loginError} type="error" />}
+
+      <Card style={loginCardStyle} bordered={false}>
+        <Title level={2} style={titleStyle}>
+          Dear Shiloh
+        </Title>
+        {loading ? (
+          <Spin />
+        ) : (
+          <div style={buttonContainerStyle}>
+            {!showLoginForm ? (
+              <>
+                <Button type="primary" size="large" onClick={handleButtonClick}>
+                  I'm Shiloh!
+                </Button>
+                <Button type="ghost" size="large" onClick={handleButtonClick}>
+                  I'm Mommy!
+                </Button>
+                <Button type="ghost" size="large" onClick={handleButtonClick}>
+                  I'm Daddy!
+                </Button>
+              </>
+            ) : (
+              <Form form={form} onFinish={handleLogin}>
+                <Form.Item
+                  name="email"
+                  rules={[{ required: true, type: "email" }]}
+                >
+                  <Input placeholder="Email" name="email" />
+                </Form.Item>
+                <Form.Item name="password" rules={[{ required: true }]}>
+                  <Input.Password placeholder="Password" name="password" />
+                </Form.Item>
+                <Button type="primary" htmlType="submit">
+                  Login
+                </Button>
+              </Form>
+            )}
+          </div>
+        )}
+      </Card>
+    </>
   );
 };
